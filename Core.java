@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class Core
@@ -15,23 +16,39 @@ public class Core
     private static Random rnd = new Random();
     private ArrayList<Process> processes;
 
+    private int count = 5 + rnd.nextInt(5);
     public Core()
     {
         createProcesses();
+        refreshProcesses();
         planProcesses();
     }
 
     public void createProcesses()
     {
         processes = new ArrayList<Process>();
-        int count = 5 + rnd.nextInt(5);
         for (int i = 0; i < count; i++)
         {
-            Process proc = new Process(i,2+rnd.nextInt(5));
+            Process proc = new Process(i,1+rnd.nextInt(5),2+rnd.nextInt(5));
             processes.add(proc);
         }
+        refreshProcesses();
     }
 
+    public void refreshProcesses()
+    {
+
+        for(int i=0;i<count-1;i++){
+            for(int j=0;j<count-1;j++) {
+                Process currentProc = processes.get(i);
+                Process nextProc = processes.get(j);
+                if (currentProc.getPriority() > nextProc.getPriority()) {
+                    Collections.swap(processes, i, j);
+                }
+            }
+        }
+
+    }
     public void planProcesses()//cyclic
     {
         int givenTime = 0;
@@ -48,11 +65,12 @@ public class Core
                 givenTime += currentQuant;
 
                 currentProc = processes.get(i);
-
-                System.out.println("Proccess PID = " + currentProc.getPID() + " execution: ");
+                System.out.println("Process PID = " + currentProc.getPID() + " Process priority = "+ currentProc.getPriority()+ " execution: ");
 
                 while(currentQuant > 0 && currentProc.getThreadCount() > 0)
                 {
+
+
                     System.out.println("Quant size = " + currentQuant);
 
                     curentThread = currentProc.createThread(currentQuant);
@@ -69,8 +87,10 @@ public class Core
                 }
 
                 System.out.println("Process has ended");
-                if(currentProc.getThreadCount() == 0)
+                if(currentProc.getThreadCount() == 0){
                     processes.remove(currentProc);
+                }
+
                 System.out.println();
             }
         }

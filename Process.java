@@ -18,18 +18,13 @@ public class Process
         }
     }
 
-
     public int getThreadCount() { return threads.size(); };
 
     public int getPID() { return pid; }
+
     public int getPriority() { return priority; }
 
-
-
-
-
-
-        public void removeThread(Thread thread)
+    public void removeThread(Thread thread)
     {
         if(thread != null)
             threads.remove(thread);

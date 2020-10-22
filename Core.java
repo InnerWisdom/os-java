@@ -20,7 +20,6 @@ public class Core
     public Core()
     {
         createProcesses();
-        refreshProcesses();
         planProcesses();
     }
 
@@ -32,14 +31,13 @@ public class Core
             Process proc = new Process(i,1+rnd.nextInt(5),2+rnd.nextInt(5));
             processes.add(proc);
         }
-        refreshProcesses();
     }
 
-    public void refreshProcesses()
+    public void refreshProcesses(int countC)
     {
 
-        for(int i=0;i<count-1;i++){
-            for(int j=0;j<count-1;j++) {
+        for(int i=0;i<countC-1;i++){
+            for(int j=0;j<countC-1;j++) {
                 Process currentProc = processes.get(i);
                 Process nextProc = processes.get(j);
                 if (currentProc.getPriority() > nextProc.getPriority()) {
@@ -93,6 +91,8 @@ public class Core
 
                 System.out.println();
             }
+            count--;
+            refreshProcesses(count);
         }
         System.out.println("Time required : "+requiredTime);
         System.out.println("Actual time : "+givenTime);

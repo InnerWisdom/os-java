@@ -48,7 +48,6 @@ public class Core {
                 while(currentQuant > 0 && currentProc.getThreadCount() > 0)
                 {
 
-
                     System.out.println("Quant size = " + currentQuant);
 
                     curentThread = currentProc.createThread(currentQuant);
@@ -64,9 +63,8 @@ public class Core {
                         currentProc.removeThread(curentThread);
                 }
 
-                Process process = processes.get(i);
-                process.load(currentQuant + process.getPriority() * givenTime);
-                if (process.getIsEmpty()) {
+                currentProc.load(currentQuant + currentProc.getPriority());
+                if (currentProc.getIsEmpty()) {
                     processes.remove(i);
                     i--;
                 }

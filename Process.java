@@ -4,6 +4,7 @@ public class Process
 {
     private final int pid;
     private final int priority;
+    private boolean isEmpty = false;
 
     private ArrayList<Thread> threads = new ArrayList<Thread>();
 
@@ -38,6 +39,37 @@ public class Process
             return res;
         }
         return null;
+    }
+
+
+    public void load(int maxTimeOfProcess) {
+        for (int i = 0; i < threads.size(); i++) {
+            Thread thread = threads.get(i);
+            if (thread.getExecTime() > maxTimeOfProcess) {
+                thread.reduceExecTime(maxTimeOfProcess);
+                System.out.println("Time appended: " + maxTimeOfProcess
+                        + " for process ID " + pid + ". Remaining time: " + thread.getExecTime() );
+                break;
+            } else if(thread.getExecTime() == maxTimeOfProcess){
+                thread.run();
+                threads.remove(thread);
+                break;
+            }
+            else  {
+                maxTimeOfProcess -= thread.getExecTime();
+                thread.run();
+                threads.remove(thread);
+                i--;
+            }
+        }
+        if (threads.isEmpty()) {
+            isEmpty = true;
+        }
+    }
+
+
+    public boolean getIsEmpty() {
+        return isEmpty;
     }
 
 }
